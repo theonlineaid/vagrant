@@ -4,60 +4,37 @@ Vagrant.configure("2") do |config|
     master.vm.box = "ubuntu/focal64"
     master.vm.hostname = "master-node"
     master.vm.network "private_network", type: "static", ip: "192.168.56.10"
+    config.vm.network "public_network", bridge: "enp1s0"
     master.vm.provider "virtualbox" do |vb|
-      vb.memory = "2048"
+      vb.memory = "4096"
       vb.cpus = 2
     end
-    master.vm.provision "shell", inline: <<-SHELL
-      sudo apt-get update
-      sudo apt-get install -y apt-transport-https ca-certificates curl
-      sudo apt-get update
-      sudo snap install kubectl --classic
-      sudo snap install kubeadm --classic
-      sudo snap install kubelet --classic
-      sudo apt-get install -y containerd
-      sudo systemctl start containerd
-      sudo systemctl enable containerd
-      sudo swapoff -a
-      # sudo systemctl enable kubelet
-
-      # Set an alias for kubectl
-      # Add the alias to .bashrc file
-      echo "alias k='kubectl'" | sudo tee -a /home/vagrant/.bashrc
-
-      # Ensure the alias works by loading the .bashrc file
-      sudo -u vagrant bash -l -c 'echo "alias k=\"kubectl\"" >> ~/.bashrc'
-      sudo -u vagrant bash -l -c 'source ~/.bashrc'
-    SHELL
+    master.vm.provision "shell", path: "script/common.sh"
   end
 
   # Define the worker node
-  config.vm.define "worker" do |worker|
+  config.vm.define "worker1" do |worker|
     worker.vm.box = "ubuntu/focal64"
-    worker.vm.hostname = "worker-node"
+    worker.vm.hostname = "worker1"
     worker.vm.network "private_network", type: "static", ip: "192.168.56.11"
+    config.vm.network "public_network", bridge: "enp1s0"
     worker.vm.provider "virtualbox" do |vb|
-      vb.memory = "2048"
+      vb.memory = "1024"
       vb.cpus = 2
     end
-    worker.vm.provision "shell", inline: <<-SHELL
-      sudo apt-get update
-      sudo apt-get install -y apt-transport-https ca-certificates curl
-      sudo apt-get update
-      sudo snap install kubectl --classic
-      sudo snap install kubeadm --classic
-      sudo snap install kubelet --classic
-      sudo apt-get install -y containerd
-      sudo systemctl start containerd
-      sudo systemctl enable containerd
-      sudo swapoff -a
-      
-      # sudo systemctl enable kubelet
-      echo "alias k='kubectl'" | sudo tee -a /home/vagrant/.bashrc
+    worker.vm.provision "shell", path: "script/common.sh"
+  end
 
-      # Ensure the alias works by loading the .bashrc file
-      sudo -u vagrant bash -l -c 'echo "alias k=\"kubectl\"" >> ~/.bashrc'
-      sudo -u vagrant bash -l -c 'source ~/.bashrc'
-    SHELL
+    # Define the worker node
+  config.vm.define "worker2" do |worker|
+    worker.vm.box = "ubuntu/focal64"
+    worker.vm.hostname = "worker2"
+    worker.vm.network "private_network", type: "static", ip: "192.168.56.12"
+    config.vm.network "public_network", bridge: "enp1s0"
+    worker.vm.provider "virtualbox" do |vb|
+      vb.memory = "1024"
+      vb.cpus = 2
+    end
+    worker.vm.provision "shell", path: "script/common.sh"
   end
 end
