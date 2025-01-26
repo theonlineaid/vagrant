@@ -31,6 +31,16 @@ sed -i '/swap/d' /etc/fstab
 modprobe br_netfilter
 sysctl -w net.ipv4.ip_forward=1
 
+# Initialize Kubernetes
+sudo kubeadm init --apiserver-advertise-address=192.168.56.10 --pod-network-cidr=10.244.0.0/16
+
+# Set up kubeconfig for root user
+mkdir -p /root/.kube
+cp -i /etc/kubernetes/admin.conf /root/.kube/config
+chown $(id -u):$(id -g) /root/.kube/config
+
+# Install Flannel CNI
+kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
 
 # Set an alias for kubectl
 echo "alias k='kubectl'" | sudo tee -a /home/vagrant/.bashrc
