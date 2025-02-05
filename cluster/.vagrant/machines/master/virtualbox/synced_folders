@@ -1,1 +1,0 @@
-{"virtualbox":{"/etc/kubernetes":{"create":true,"guestpath":"/etc/kubernetes","hostpath":"/home/md-omor/Documents/vm/cluster/k8s","disabled":false,"__vagrantfile":true},"/vagrant":{"guestpath":"/vagrant","hostpath":"/home/md-omor/Documents/vm/cluster","disabled":false,"__vagrantfile":true}}}

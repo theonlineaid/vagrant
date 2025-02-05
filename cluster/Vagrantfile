@@ -7,7 +7,7 @@ Vagrant.configure("2") do |config|
     config.vm.network "public_network", bridge: "enp1s0"
 
     # Share the /etc/kubernetes folder from the master node to the worker nodes
-    master.vm.synced_folder "/home/md-omor/Documents/vm/cluster/k8s", "/etc/kubernetes", create: true
+    # master.vm.synced_folder "/home/md-omor/Documents/vm/cluster/k8s", "/etc/kubernetes", create: true
 
     master.vm.provider "virtualbox" do |vb|
       vb.memory = "4096"

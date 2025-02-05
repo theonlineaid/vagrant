@@ -31,6 +31,9 @@ sed -i '/swap/d' /etc/fstab
 modprobe br_netfilter
 sysctl -w net.ipv4.ip_forward=1
 
+# mkdir -p $HOME/.kube
+# nano $HOME/.kube/config
+
 
 # Set an alias for kubectl
 echo "alias k='kubectl'" | sudo tee -a /home/vagrant/.bashrc
